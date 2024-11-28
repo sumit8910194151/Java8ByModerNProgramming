@@ -10,10 +10,24 @@ public class Student {
     private double gpa;
     private String gender;
 
+    public void setNoteBooks(int noteBooks) {
+        this.noteBooks = noteBooks;
+    }
+
+
+
+
+    public int getNoteBooks() {
+        return noteBooks;
+    }
+
+
+
     List<String> activities = new ArrayList<>();
+    private int noteBooks;
 
 
-    public Student(String name, int gradeLevel, double gpa, String gender, int noteBooks, List<String> activities) {
+    public Student(String name, int gradeLevel, double gpa, String gender, List<String> activities, int noteBooks) {
         this.name = name;
         this.gradeLevel = gradeLevel;
         this.gpa = gpa;
