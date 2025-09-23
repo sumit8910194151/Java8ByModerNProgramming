@@ -16,7 +16,7 @@ public class SupplierExample {
 
     public static void main(String[] args) {
         Supplier<Student> supplierExample=()->{
-return new Student("Adam",2,3.6, "male",10, Arrays.asList("swimming", "basketball","volleyball"));
+return new Student("Adam",2,3.6, "male", Arrays.asList("swimming", "basketball","volleyball"), 10);
         };
 
         Supplier<List<Student>> allStudents=()->{
