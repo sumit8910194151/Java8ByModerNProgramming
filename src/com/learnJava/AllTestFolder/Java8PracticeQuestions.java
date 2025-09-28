@@ -54,6 +54,60 @@ public class Java8PracticeQuestions {
         System.out.println("Capitalize e: "+ strList.stream().map(e->e.equals("e")?e.toUpperCase():e).collect(Collectors.joining()));
         System.out.println("Reverse string: "+strList.stream().reduce((a,b)->b+a));
         System.out.println("Reverse word by word: "+Arrays.asList(str.split(" ")).stream().reduce((a,b)->b+" " +a));
+        System.out.println("find element starts with number: "+Stream
+                .of("1gh", "rgt", "r4gt", "h2ty", "5gtf", "7ifd")
+                .filter(e->e.substring(0,1)
+                .matches(".*\\d.*"))
+                .collect(Collectors.toSet()));
+        System.out.println("get list of string that contains number: "+Stream
+                .of("1gh", "rgt", "r4gt", "h2ty", "5gtf", "7ifd")
+                .filter(e->e.matches(".*\\d.*"))
+                .collect(Collectors.toSet()));
+
+        String t="1hf kj&(nkv %^bvei";
+        /*System.out.println("special character count in java: "+ t.chars().mapToObj(e->(char)e)
+                .filter(e->(!Character.isLetterOrDigit(e) && !e.equals(" ")))
+                .forEach(System.out::println));*/
+        System.out.println("special character count in java: ");
+        t.chars().mapToObj(e->(char)e)
+                .filter(e->((!Character.isLetterOrDigit(e)) && (!e.equals(" "))))
+                .forEach(System.out::println);
+        String str1="listen";
+        String str2="silent";
+        String collect1=Arrays.stream(str1.split(""))
+                .sorted().collect(Collectors.joining());
+        String collect2=Arrays.stream(str2.split(""))
+                .sorted().collect(Collectors.joining());
+        System.out.println("two strings are anagram: "+collect2.equals(collect1));
+
+        List<String> words=Arrays.asList("cat","rat","bat", "cow", "cat", "bat", "java", "Python", "C#", "HTML","kotlin","C++", "COBOL", "C");
+        System.out.println("Sort the elements by length: "+ words.stream()
+                .sorted(Comparator.comparing(String::length))
+                .toList());
+        System.out.println("Group elements by length: "+words.stream()
+                .collect(Collectors.groupingBy(String::length)));
+        List<Character> list4=Arrays.asList('a', 'b', 'c', 'd', 'e');
+
+        System.out.println("convert 1st 3 chars to upper case: "+ list4.stream()
+                .map(e->list4.indexOf(e)<=2?e.toString().toUpperCase():e)
+                .collect(Collectors.toSet()));
+
+        int[] a={1,4,2,3,9,6};
+        int[] b={1,10,7,5,15,6};
+        String strMadam="madam";
+        System.out.println("reverse an integer array: "+Arrays
+                .toString(IntStream.rangeClosed(1,a.length).map(i->a[a.length-i]).toArray()));
+        System.out.println("sorting 2 unsorted array: "+ Arrays
+                .toString(IntStream.concat(Arrays.stream(a),Arrays.stream(b))
+                        .sorted().toArray()));
+
+        System.out.println("Palindrome String: "+ IntStream
+                .rangeClosed(0,strMadam.length()/2).noneMatch(e->strMadam.charAt(e)!=strMadam.charAt(strMadam.length()-e-1)));
+
+
+
+
+
 
     }
 }
