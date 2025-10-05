@@ -1,9 +1,11 @@
 package com.learnJava.AllTestFolder;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.learnJava.data.Student;
+import com.learnJava.data.StudentDataBase;
+import com.learnJava.functionalInterfaces.BiFunctionExample;
+
+import java.util.*;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -104,6 +106,141 @@ public class Java8PracticeQuestions {
         System.out.println("Palindrome String: "+ IntStream
                 .rangeClosed(0,strMadam.length()/2).noneMatch(e->strMadam.charAt(e)!=strMadam.charAt(strMadam.length()-e-1)));
 
+
+
+        /*
+        * JAVA 8 question based on POJO classess
+        * */
+
+        List<Student> allStudents= StudentDataBase.getAllStudents();
+        //supply new student using supplier constructor reference example
+        Supplier<Student> studentSupplier=Student::new;
+        //create new student with"ABC" as name using function
+        Function<String,Student> studentFunction=Student::new;
+        System.out.println(studentSupplier.get());
+        System.out.println(studentFunction.apply("ABC"));
+
+        //Print name and activities of student using bi-consumer
+        BiConsumer<String,List<String>> biConsumerPractice=(name,activities)-> System.out.println(name+" -- "+activities);
+        for (Student student : allStudents) {
+            biConsumerPractice.accept(student.getName(), student.getActivities());
+        }
+
+        /*
+        * Bi-consumer and then
+        * */
+
+        BiConsumer<Integer,Integer> multiply=(p,q)->{
+            System.out.println("multiply is : "+(p*q));
+        };
+
+        BiConsumer<Integer,Integer> divide=(p,q)->{
+            System.out.println("divide is : "+(p/q));
+        };
+
+        multiply.andThen(divide).accept(10,5);
+
+
+        /*
+        * Bi-function example
+        * question--find all the students whose grade is greater than 3
+        * */
+
+        BiFunction<List<Student>, Predicate<Student>,Map<String,Double>> biFunctionExample=
+                (allStudents1,studentsPredicate)->{
+            Map<String,Double> studentGradeMap=new HashMap<>();
+                    allStudents.forEach(student-> {
+                        if(studentsPredicate.test(student)){
+                            studentGradeMap.put(student.getName(),student.getGpa());
+                        }
+
+                    });
+                    return studentGradeMap;
+                };
+
+        System.out.println(biFunctionExample.apply(allStudents,(student)-> student.getGradeLevel()>=3));
+
+
+        /*
+        * Binaryoperator example
+        * it takes 2 input and returns output of the same type it extends bifunction
+         * functional interface
+        * */
+
+        BinaryOperator<Integer> binaryOperatorExample1=(k,l)->k*l;
+        System.out.println("result of multiplication is: "+binaryOperatorExample1.apply(3,5));
+
+
+        /*
+        * Consumer example
+        *
+        *
+        * */
+
+        Consumer<List<Student>> printAllStudent= students->{students.forEach(System.out::println);};
+        Consumer<List<Student>> printAllStudentName=students->{
+            students.forEach(e->System.out.println(e.getName()));
+        };
+        Consumer<List<Student>> printActivities =students -> {
+            students.forEach(e->System.out.println(e.getActivities()));
+        };
+        printAllStudent.accept(allStudents);
+        printAllStudentName.accept(allStudents);
+        printActivities.accept(allStudents);
+
+
+        /*
+        * Function example
+        * */
+
+        Function<String,String> functionExample = (s)->s.toUpperCase();
+        System.out.println(functionExample.apply("java8"));
+
+        /*
+        * put all the students with grade greater than 3 in a map
+        * */
+
+        Function<List<Student>,Map<String,Double>> studentGradeMap=allStudentsList->{
+            Map<String,Double> gradeMap=new HashMap<>();
+            Predicate<Student> c1=e->e.getGpa()>=3;
+            allStudents.forEach(e->{
+                if(c1.test(e)){
+                    gradeMap.put(e.getName(),e.getGpa());
+                }
+                    }
+                    );
+            return gradeMap;
+        };
+        System.out.println(studentGradeMap.apply(allStudents));
+
+        /*
+        * Predicte and consumer example
+        * */
+
+        Predicate<Student> p1=student->student.getGradeLevel()>=3;
+        Predicate<Student> p2=student -> student.getGpa()>=3.9;
+
+        BiPredicate<Integer,Double> biP1=(gradeLevel,gpa)->gradeLevel>=3 && gpa>=3.9;
+
+        BiConsumer<String,List<String>> bic1=(name,activities)-> System.out.println(name+" - - "+activities);
+
+
+        Consumer<Student> studentConsumer1=student->{
+            if(p1.test(student) && p2.test(student)){
+                bic1.accept(student.getName(),student.getActivities());
+            }
+        };
+        Consumer<Student> studentConsumerBiPredicate=student->{
+            if(biP1.test(student.getGradeLevel(),student.getGpa())){
+              bic1.accept(student.getName(),student.getActivities());
+            }
+        };
+
+
+        System.out.println("print students using consumer: ");
+        allStudents.forEach(studentConsumer1);
+        System.out.println("print students using consumer and bi predicate ");
+        allStudents.forEach(studentConsumerBiPredicate);
 
 
 
