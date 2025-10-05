@@ -237,7 +237,7 @@ public class Java8PracticeQuestions {
         };
 
 
-        System.out.println("print students using consumer: ");
+        System.out.println("print students using consumer:-- ");
         allStudents.forEach(studentConsumer1);
         System.out.println("print students using consumer and bi predicate ");
         allStudents.forEach(studentConsumerBiPredicate);
